@@ -28,7 +28,8 @@ class TestDemo:
             'access_token': access_token
         }
 
-    @pytest.mark.parametrize("username, password,rst", [("user01", "pwd", "200"), ("user20", "pwd", "401")])
+    @pytest.mark.parametrize("username, password,rst",
+                             [("user01", "pwd", "200"), ("user10", "pwd1", "401"), ("user20", "pwd", "401")])
     def test_login(self, username, password, rst):
         ret = self.login(username, password)
         assert ret["code"] == rst
@@ -38,7 +39,8 @@ class TestDemo:
         url = "http://106.53.223.46:9091/api/v1/menu/list"
         ret = requests.get(url, headers=heard).json()
         menu_name = jsonpath.jsonpath(ret, "$..menu_name")
-        assert "烧饼" in menu_name
+        pytest.assume(len(menu_name) == 18)
+        pytest.assume("烧饼" in menu_name)
 
     @pytest.mark.parametrize("oder_list,rst", yaml.safe_load(open("order.yaml")))
     def test_confirm(self, oder_list, rst):
@@ -46,5 +48,5 @@ class TestDemo:
         data = oder_list
         url = "http://106.53.223.46:9091/api/v1/menu/confirm"
         ret = requests.post(url, headers=heard, json=data).json()
-        assert rst["total"] == ret["total"]
-        assert rst["total_price"] == ret["total_price"]
+        pytest.assume(rst["total"] == ret["total"])
+        pytest.assume(rst["total_price"] == ret["total_price"])
