@@ -14,6 +14,8 @@
         number: 3
       - menu_number: "11"
         number: 6
+      - menu_number: "15"
+        number: 2
   -
-      total: 9
-      total_price: 228.0
+      total: 11
+      total_price: 280.0
